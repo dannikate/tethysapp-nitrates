@@ -6,8 +6,8 @@ class Nitrates(TethysAppBase):
     Tethys app class for Test.
     """
 
-    name = 'Test'
-    description = 'first_test'
+    name = 'Guam Nitrates'
+    description = 'Well nitrate measurments'
     package = 'nitrates'  # WARNING: Do not change this value
     index = 'home'
     icon = f'{package}/images/icon.gif'

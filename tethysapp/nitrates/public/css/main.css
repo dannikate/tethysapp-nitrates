@@ -1,4 +1,12 @@
-#map { 
-    height: 100%; 
+#app-content-wrapper #app-content {
+    height: 100%;
+}
+
+#inner-app-content {
+    padding: 0;
+    height: 100%;
+}
+#map {
+    height: 100%;
     width: 100%;
 }

@@ -1,18 +1,40 @@
-const yigo = L.marker([13.5640, 144.9061]).bindPopup('Yigo'),
-    dededo = L.marker([13.5453, 144.8511]).bindPopup('Dededo'),
-    mangilao = L.marker([13.4702, 144.8456]).bindPopup('Mangilao'),
-    tamuning = L.marker([13.5005, 144.7956]).bindPopup('Tamuning'), 
-    barrigada = L.marker([13.4708, 144.8181]).bindPopup('Barrigada'),
-    agana = L.marker([13.4763, 144.7502]).bindPopup('Agana'), 
-    asan = L.marker([13.4608, 144.7247]).bindPopup('Asan'), 
-    piti = L.marker([13.4456, 144.6918]).bindPopup('Piti'),
-    yona = L.marker([13.4010, 144.7522]).bindPopup('Yona'),
-    santaRita = L.marker([13.3743, 144.7083]).bindPopup('Santa Rita')
-    agat = L.marker([13.3673, 144.6643]).bindPopup('Agat'),
-    talofofo = L.marker([13.3383, 144.7302]).bindPopup('Talofofo'),
-    inarajan = L.marker([13.2792, 144.7302]).bindPopup('Inajaran'),
-    umatac = L.marker([13.3139, 144.6698]).bindPopup('Umatac'),
-    merizo = L.marker([13.2682, 144.6918]).bindPopup('Merizo'); 
+const map = L.map('map', {
+    center: [13.525293719720237, 144.85456459772948],
+    zoom: 13,
+});
+const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '© OpenStreetMap'
+}).addTo(map);
+const baseLayers = {
+    'Open Street Map': osm
+};
+
+const yigo = L.marker([13.5640, 144.9061]).bindPopup('Yigo')
+const dededo = L.marker([13.5453, 144.8511]).bindPopup('Dededo')
+const mangilao = L.marker([13.4702, 144.8456]).bindPopup('Mangilao')
+const tamuning = L.marker([13.5005, 144.7956]).bindPopup('Tamuning')
+const barrigada = L.marker([13.4708, 144.8181]).bindPopup('Barrigada')
+const agana = L.marker([13.4763, 144.7502]).bindPopup('Agana')
+const asan = L.marker([13.4608, 144.7247]).bindPopup('Asan')
+const piti = L.marker([13.4456, 144.6918]).bindPopup('Piti')
+const yona = L.marker([13.4010, 144.7522]).bindPopup('Yona')
+const santaRita = L.marker([13.3743, 144.7083]).bindPopup('Santa Rita')
+const agat = L.marker([13.3673, 144.6643]).bindPopup('Agat')
+const talofofo = L.marker([13.3383, 144.7302]).bindPopup('Talofofo')
+const inarajan = L.marker([13.2792, 144.7302]).bindPopup('Inajaran')
+const umatac = L.marker([13.3139, 144.6698]).bindPopup('Umatac')
+const merizo = L.marker([13.2682, 144.6918]).bindPopup('Merizo')
+
+const villages = L.layerGroup([yigo, dededo, mangilao, tamuning, barrigada, agana, asan, piti, yona, santaRita, agat, talofofo, inarajan, umatac, merizo]);
+
+const overlays = {
+    'Villages': villages
+};
+
+const layerControl = L.control.layers({"Open Street Map": osm}, overlays).addTo(map);
+
+let selectedWellID
 
 fetch(urlWellsGeoJSON)
     .then(response => response.json())
@@ -21,29 +43,17 @@ fetch(urlWellsGeoJSON)
             if (feature.properties) {
                 layer.bindPopup(`Well: ${feature.properties.Well} <br> Lat: ${feature.properties.LAT} <br> Lon: ${feature.properties.LON} <br> Sig: ${feature.properties.Sig}`);
             }
+            layer.on('click', a => selectedWellID = a.target.feature.properties.Well)
         }
         const wellGeoJSON = L.geoJSON(geojson, {onEachFeature: getWellValues}).addTo(map);
+        layerControl.addOverlay(wellGeoJSON, "Well Locations")
     })
 
-const villages = L.layerGroup([yigo, dededo, mangilao, tamuning, barrigada, agana, asan, piti, yona, santaRita, agat, talofofo, inarajan, umatac, merizo]); 
 
-const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-maxZoom: 19,
-attribution: '© OpenStreetMap'
-});
-
-const map = L.map('map', {
-center: [13.525293719720237, 144.85456459772948], 
-zoom: 13,
-layers: [osm, villages]
-});
-
-const baseLayers = { 
-    'Open Street Map': osm
-}; 
-
-const overlays = {
-    'Villages': villages
-};
-
-const layerControl = L.control.layers({"Open Street Map": osm}).addTo(map);
+const getNitrateTimeSeries = () => {
+    fetch(urlGetNitrateTimeSeries + `?well_id=${selectedWellID}`)
+        .then(response => response.json())
+        .then(json => {
+            // TODO write code that makes the plotly plot
+        })
+}
