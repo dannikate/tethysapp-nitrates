@@ -87,5 +87,6 @@ def get_nitrate_time_series(request, app_workspace):
     well_id = request.GET.get("well_id")
     # read the csv with the same name as the id
     df = pd.read_csv(os.path.join(app_workspace.path, f'{well_id}.csv'))
+    df = df.dropna()
     # format the csv as a json which we can send back to the user
     return JsonResponse({'datetime': list(df['datetime']), 'values': list(df['values'])})

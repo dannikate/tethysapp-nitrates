@@ -1,4 +1,4 @@
-{% extends "tethys_apps/app_base.html" %}
+{% extends "tethys_apps/app_header_content.html" %}
 
 {% load static %}
 
@@ -24,9 +24,12 @@
 
 {% block content_dependent_styles %}
   {{ block.super }}
+  <!-- Leaflet JS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
         integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
         crossorigin=""/>
+  
+  <!-- Styles -->
   <link href="{% static 'nitrates/css/main.css' %}" rel="stylesheet"/>
 {% endblock %}
 
@@ -36,9 +39,22 @@
    const urlWellsGeoJSON = "{%  static 'nitrates/geojson/NO3Map1.json' %}"
    const urlGetNitrateTimeSeries = "{% url 'nitrates:get-nitrate-time-series' %}"
   </script>
+
+  <!-- Leaflet Styles -->
   <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
           integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
           crossorigin=""></script>
+
+  <!-- Plotly JS and CSS -->
+  <script src="https://cdn.plot.ly/plotly-2.14.0.min.js"></script>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx"
+   crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk"
+     crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js" integrity="sha384-ODmDIVzN+pFdexxHEHFBQH3/9/vQ9uori45z4JjnFsRydbmQbmL5t1tQ0culUzyK"
+     crossorigin="anonymous"></script>
 
   <script src="{% static 'nitrates/js/main.js' %}" type="text/javascript"></script>
 {% endblock %}

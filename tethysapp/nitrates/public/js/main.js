@@ -34,7 +34,29 @@ const overlays = {
 
 const layerControl = L.control.layers({"Open Street Map": osm}, overlays).addTo(map);
 
-let selectedWellID
+const plotWNL = (plotData, selectedWellID) => {
+    const wnlTrace = {
+        x: plotData.datetime,
+        y: plotData.values,
+        type: 'scatter',
+        name: 'Well Nitrate Levels'
+    };
+    const layout = { 
+        title: {
+            text: `Nitrate Levels for ${selectedWellID}`,
+            font: {
+                size: 20
+            }
+        },
+        xaxis: {
+            title: "Years", 
+        },
+        yaxis: {
+            title: 'ppm (mg/L)',
+        }
+    }
+    Plotly.newPlot('plot-div', [wnlTrace,], layout)
+}
 
 fetch(urlWellsGeoJSON)
     .then(response => response.json())
@@ -43,17 +65,22 @@ fetch(urlWellsGeoJSON)
             if (feature.properties) {
                 layer.bindPopup(`Well: ${feature.properties.Well} <br> Lat: ${feature.properties.LAT} <br> Lon: ${feature.properties.LON} <br> Sig: ${feature.properties.Sig}`);
             }
-            layer.on('click', a => selectedWellID = a.target.feature.properties.Well)
+            layer.on('click', a => getNitrateTimeSeries(a.target.feature.properties.Well))
         }
         const wellGeoJSON = L.geoJSON(geojson, {onEachFeature: getWellValues}).addTo(map);
         layerControl.addOverlay(wellGeoJSON, "Well Locations")
     })
 
-
-const getNitrateTimeSeries = () => {
+const getNitrateTimeSeries = (selectedWellID) => {
     fetch(urlGetNitrateTimeSeries + `?well_id=${selectedWellID}`)
         .then(response => response.json())
-        .then(json => {
+        .then(plotData => {
+            plotWNL(plotData, selectedWellID)
             // TODO write code that makes the plotly plot
+            const getWNLValues =(feature, layer) => {
+                layer.bindPopup(
+                    [0, 1, 2, 3, 4].map(nl => `NL${nl}: ${selectedWellID} <br>`).join('') + '<button type="button" class="btn btn-primary" data-bs-toggle="modal" onclick="plotFDC()" data-bs-target="#exampleModal">Plot FDC</button>'
+                );
+            }
         })
 }
