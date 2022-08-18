@@ -1,0 +1,12 @@
+{
+"type": "FeatureCollection",
+"name": "NO3Map1",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "CID": 1, "Well": "D-7", "LAT": 13.5329522, "LON": 144.8508027, "Sig": 1 }, "geometry": { "type": "Point", "coordinates": [ 144.850802700000031, 13.532952200000068 ] } },
+{ "type": "Feature", "properties": { "CID": 2, "Well": "D-21", "LAT": 13.54193941, "LON": 144.8439739, "Sig": 1 }, "geometry": { "type": "Point", "coordinates": [ 144.843973900000037, 13.541939410000055 ] } },
+{ "type": "Feature", "properties": { "CID": 3, "Well": "Y-6", "LAT": 13.52625649, "LON": 144.8798558, "Sig": 1 }, "geometry": { "type": "Point", "coordinates": [ 144.879855800000087, 13.526256490000037 ] } },
+{ "type": "Feature", "properties": { "CID": 4, "Well": "M-15", "LAT": 13.49988043, "LON": 144.8435842, "Sig": 0 }, "geometry": { "type": "Point", "coordinates": [ 144.8435842, 13.499880430000076 ] } },
+{ "type": "Feature", "properties": { "CID": 5, "Well": "M-21", "LAT": 13.49837265, "LON": 144.8177528, "Sig": -1 }, "geometry": { "type": "Point", "coordinates": [ 144.817752800000108, 13.498372650000022 ] } }
+]
+}
