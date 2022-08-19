@@ -9,11 +9,10 @@
 #map {
     /* height: 100%;
     width: 100%; */
-    height: 50%;
+    height: 60%;
 }
 #plot-div {
-    height: 50%;
-    /* background-color: green; */
+    height: 40%;
 }
 .leaflet-popup-content {
     display: flex;

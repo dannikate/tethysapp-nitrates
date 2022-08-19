@@ -1,6 +1,6 @@
 const map = L.map('map', {
-    center: [13.525293719720237, 144.85456459772948],
-    zoom: 13,
+    center: [13.455207, 144.7900861],
+    zoom: 11,
 });
 const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
@@ -35,15 +35,16 @@ const overlays = {
 const layerControl = L.control.layers({"Open Street Map": osm}, overlays).addTo(map);
 
 const plotWNL = (plotData, selectedWellID) => {
-    const wnlTrace = {
+    const wnlTrace1 = {
         x: plotData.datetime,
         y: plotData.values,
         type: 'scatter',
+        mode: 'markers',
         name: 'Well Nitrate Levels'
     };
     const layout = { 
         title: {
-            text: `Nitrate Levels for ${selectedWellID}`,
+            text: `Nitrate Levels for Well ${selectedWellID}`,
             font: {
                 size: 20
             }
@@ -53,9 +54,13 @@ const plotWNL = (plotData, selectedWellID) => {
         },
         yaxis: {
             title: 'ppm (mg/L)',
+            range: [0, 5], 
+            tickvals: [0, 1, 2, 3, 4]
         }
     }
-    Plotly.newPlot('plot-div', [wnlTrace,], layout)
+    // const wnlTrace2 = {
+    // }
+    Plotly.newPlot('plot-div', [wnlTrace1], layout)
 }
 
 fetch(urlWellsGeoJSON)
@@ -79,8 +84,9 @@ const getNitrateTimeSeries = (selectedWellID) => {
             // TODO write code that makes the plotly plot
             const getWNLValues =(feature, layer) => {
                 layer.bindPopup(
-                    [0, 1, 2, 3, 4].map(nl => `NL${nl}: ${selectedWellID} <br>`).join('') + '<button type="button" class="btn btn-primary" data-bs-toggle="modal" onclick="plotFDC()" data-bs-target="#exampleModal">Plot FDC</button>'
+                    [0, 1, 2, 3, 4].map(nl => `NL${nl}: ${selectedWellID} <br>`).join('') + '<button type="button" class="btn btn-primary" data-bs-toggle="modal" onclick="plotWNL()" data-bs-target="#exampleModal">Plot WNL</button>'
                 );
+                layer.on('click', a => plotData = a.target.feature.properties)
             }
         })
 }
