@@ -20,3 +20,12 @@
     align-items: center;
     font-size: larger;
 }
+#stats-div {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+#data-container {
+    display: flex;
+    justify-content: center;
+}

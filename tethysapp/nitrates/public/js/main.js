@@ -54,12 +54,8 @@ const plotWNL = (plotData, selectedWellID) => {
         },
         yaxis: {
             title: 'ppm (mg/L)',
-            range: [0, 5], 
-            tickvals: [0, 1, 2, 3, 4]
         }
     }
-    // const wnlTrace2 = {
-    // }
     Plotly.newPlot('plot-div', [wnlTrace1], layout)
 }
 
@@ -68,7 +64,8 @@ fetch(urlWellsGeoJSON)
     .then(geojson => {
         function getWellValues(feature, layer) {
             if (feature.properties) {
-                layer.bindPopup(`Well: ${feature.properties.Well} <br> Lat: ${feature.properties.LAT} <br> Lon: ${feature.properties.LON} <br> Sig: ${feature.properties.Sig}`);
+                layer.bindPopup(`Well: ${feature.properties.Well} <br> Lat: ${feature.properties.LAT} <br> Lon: ${feature.properties.LON} <br> Sig: ${feature.properties.Sig}
+                `);
             }
             layer.on('click', a => getNitrateTimeSeries(a.target.feature.properties.Well))
         }
@@ -80,13 +77,18 @@ const getNitrateTimeSeries = (selectedWellID) => {
     fetch(urlGetNitrateTimeSeries + `?well_id=${selectedWellID}`)
         .then(response => response.json())
         .then(plotData => {
+            // TODO write code that makes the plotly plot 
+            console.log(plotData)
             plotWNL(plotData, selectedWellID)
-            // TODO write code that makes the plotly plot
-            const getWNLValues =(feature, layer) => {
-                layer.bindPopup(
-                    [0, 1, 2, 3, 4].map(nl => `NL${nl}: ${selectedWellID} <br>`).join('') + '<button type="button" class="btn btn-primary" data-bs-toggle="modal" onclick="plotWNL()" data-bs-target="#exampleModal">Plot WNL</button>'
-                );
-                layer.on('click', a => plotData = a.target.feature.properties)
-            }
+            document.getElementById("stats-div").innerText = JSON.stringify(plotData.stats, null, 3)
         })
 }
+
+// const getWellStats = (selectedWellID) => {
+//     fetch(urlGetWellStats + `?well_id=${selectedWellID}`)
+//         .then(response => response.json())
+//         .then(wellStats => {
+//             // document.getElementById("stats-div").innerHTML += plotData.stats.Average
+//             console.log(wellStats);
+//         })
+// }
