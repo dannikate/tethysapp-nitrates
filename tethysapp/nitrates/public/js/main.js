@@ -32,7 +32,7 @@ const overlays = {
     'Villages': villages
 };
 
-const layerControl = L.control.layers({"Open Street Map": osm}, overlays).addTo(map);
+const layerControl = L.control.layers(baseLayers, overlays).addTo(map);
 
 const plotWNL = (plotData, selectedWellID) => {
     const wnlTrace1 = {
@@ -41,7 +41,7 @@ const plotWNL = (plotData, selectedWellID) => {
         type: 'scatter',
         mode: 'markers',
         name: 'Well Nitrate Levels'
-    };
+    }
     const layout = { 
         title: {
             text: `Nitrate Levels for Well ${selectedWellID}`,
@@ -77,8 +77,6 @@ const getNitrateTimeSeries = (selectedWellID) => {
     fetch(urlGetNitrateTimeSeries + `?well_id=${selectedWellID}`)
         .then(response => response.json())
         .then(plotData => {
-            // TODO write code that makes the plotly plot 
-            console.log(plotData)
             plotWNL(plotData, selectedWellID)
             document.getElementById("stats-div").innerText = JSON.stringify(plotData.stats, null, 3)
         })
